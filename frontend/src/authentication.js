@@ -5,23 +5,41 @@ var cookies = new Cookies();
 
 const auth = {
   isAuthenticated: false,
-  authenticate(cb) {
+  signin(name, pass, cb) {
     axios.post('/api/authenticate', {
-    name: 'test',
-    password: 'test'
-  })
-  .then(function (response) {
-    console.log(response);
-    if(response.data.success) {
-      cookies.set('token', response.data.token, { path: '/', maxAge: 86400 });
-      cookies.set('user', response.data.user, { path: '/', maxAge: 86400 });
-      auth.isAuthenticated = true;
-      cb();
-    }
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
+    name: name,
+    password: pass
+    })
+    .then(function (response) {
+      console.log(response);
+      if(response.data.success) {
+        cookies.set('token', response.data.token, { path: '/', maxAge: 86400 });
+        cookies.set('user', response.data.user, { path: '/', maxAge: 86400 });
+        auth.isAuthenticated = true;
+        cb();
+      }
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  },
+  signup(name, pass, cb) {
+    axios.post('/api/users/signup', {
+      name: name,
+      password: pass
+    })
+    .then(function (response) {
+      console.log(response);
+      if(response.data.success) {
+        cookies.set('token', response.data.token, { path: '/', maxAge: 86400 });
+        cookies.set('user', response.data.user, { path: '/', maxAge: 86400 });
+        auth.isAuthenticated = true;
+        cb();
+      }
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   },
   signout(cb) {
     cookies.remove('token', { path: '/' });

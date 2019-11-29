@@ -11,6 +11,9 @@ import {
 
 import auth from './authentication';
 import Cookies from 'universal-cookie';
+import Pizzerias from './components/pizzerias';
+import SignUp from './components/signup';
+import SignIn from './components/signin';
 
 var cookies = new Cookies();
 
@@ -51,10 +54,13 @@ class AuthExample extends Component {
 
           <Switch>
             <Route path="/public">
-              <PublicPage />
+              <Pizzerias />
             </Route>
             <Route path="/login">
-              <LoginPage />
+              <SignIn />
+            </Route>
+            <Route path="/signup">
+              <SignUp />
             </Route>
             <PrivateRoute path="/protected">
               <ProtectedPage />
@@ -127,23 +133,5 @@ function ProtectedPage() {
   return <h3>Protected</h3>;
 }
 
-function LoginPage() {
-  let history = useHistory();
-  let location = useLocation();
-
-  let { from } = location.state || { from: { pathname: "/" } };
-  let login = () => {
-    auth.authenticate(() => {
-      history.replace(from);
-    });
-  };
-
-  return (
-    <div>
-      <p>You must log in to view the page at {from.pathname}</p>
-      <button onClick={login}>Log in</button>
-    </div>
-  );
-}
 
 export default AuthExample;

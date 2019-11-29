@@ -1,14 +1,14 @@
 /// todos ///
 - add users
-  - signup page
-  - login page
+  /- signup component
+  /- login component
+  - profil page
 - add pizzerias
   - add pizzeria page
   /- test pizzeria
 - add pizza ui
   /- show sample name of pizzeria
 
-- git
 - add recommendation
 - add user specific recommendaitons
 
@@ -20,3 +20,4 @@
   /- cookie.save('token', user.token, { path: '/', maxAge: 86400 });
     cookie.save('user', user, { path: '/', maxAge: 86400 });
     /- test user
+/- git
