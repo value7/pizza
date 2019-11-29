@@ -1,0 +1,22 @@
+/// todos ///
+- add users
+  - signup page
+  - login page
+- add pizzerias
+  - add pizzeria page
+  /- test pizzeria
+- add pizza ui
+  /- show sample name of pizzeria
+
+- git
+- add recommendation
+- add user specific recommendaitons
+
+
+/// done ///
+/- add db (sqlite)
+/- add authentication
+  /- backend
+  /- cookie.save('token', user.token, { path: '/', maxAge: 86400 });
+    cookie.save('user', user, { path: '/', maxAge: 86400 });
+    /- test user
