@@ -1,42 +1,50 @@
 import React, {Component} from 'react'
-import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 
 var cookies = new Cookies();
 
-class Pizzerias extends Component {
+class Profil extends Component {
   constructor(props) {
     super(props);
     // Don't call this.setState() here!
-    this.state = { pizzerias: [] };
+    this.state = { user: null };
     //this.handleClick = this.handleClick.bind(this);
   }
   componentDidMount() {
     let that = this;
-    axios.get('/api/pizzeria/getAll')
+    var username = cookies.get('user');
+    console.log(username);
+    var token = cookies.get('token');
+    var headers = {
+      'x-access-token': token
+    }
+
+    axios.get('/api/users/' + username, { params:{}, headers: headers })
     .then(function (response) {
       // handle success
       console.log(response);
       that.setState({
-        pizzerias: response.data.pizzerias
+        user: response.data.user
       });
     })
     .catch(function (error) {
       // handle error
       console.log(error);
-    });
+    })
 
   }
   render() {
     return (
       <div>
-        {this.state.pizzerias.map((pizzeria) =>
-          <Link to={"/pizzeria/" + pizzeria.name} key={pizzeria.id}>{pizzeria.name}</Link>
+        {this.state.user ? (
+          <div> username: {this.state.user.name} </div>
+        ) : (
+          <div> not logged in at the moment </div>
         )}
       </div>
     )
   }
 }
 
-export default Pizzerias;
+export default Profil;

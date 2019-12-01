@@ -1,42 +1,50 @@
 import React, {Component} from 'react'
-import { Link } from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 
 var cookies = new Cookies();
 
-class Pizzerias extends Component {
+class Pizzeria extends Component {
   constructor(props) {
     super(props);
     // Don't call this.setState() here!
-    this.state = { pizzerias: [] };
+    this.state = {};
     //this.handleClick = this.handleClick.bind(this);
   }
   componentDidMount() {
     let that = this;
-    axios.get('/api/pizzeria/getAll')
+    console.log(this.props.match.params);
+
+    axios.get('/api/pizzeria/getDetails/' + this.props.match.params.name)
     .then(function (response) {
       // handle success
       console.log(response);
       that.setState({
-        pizzerias: response.data.pizzerias
+        pizzeria: response.data.pizzeria
       });
     })
     .catch(function (error) {
       // handle error
       console.log(error);
     });
-
   }
   render() {
     return (
       <div>
-        {this.state.pizzerias.map((pizzeria) =>
-          <Link to={"/pizzeria/" + pizzeria.name} key={pizzeria.id}>{pizzeria.name}</Link>
+      PIZZERIA SITE
+        {this.state.pizzeria ? (
+          <div>
+            <div>name: {this.state.pizzeria.name}</div>
+            <div>addresse: {this.state.pizzeria.addresse}</div>
+            <div>link: {this.state.pizzeria.website}</div>
+            </div>
+        ) : (
+          <div>loading</div>
         )}
       </div>
     )
   }
 }
 
-export default Pizzerias;
+export default withRouter(Pizzeria);

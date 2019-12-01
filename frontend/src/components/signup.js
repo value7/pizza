@@ -16,7 +16,8 @@ class SignUp extends Component {
   }
   redirect = () => {
     console.log('asdfsadfsadfasdf');
-    this.setState({redirect: "/protected"})
+    this.setState({redirect: "/protected"});
+    this.props.update();
   }
   nameChangeHandler = (event) => {
     this.setState({username: event.target.value});
@@ -30,10 +31,12 @@ class SignUp extends Component {
     }
     return (
       <form onSubmit={this.submitHandler}>
+        <p>name:</p>
         <input
           type='text'
           onChange={this.nameChangeHandler}
         />
+        <p>password:</p>
         <input
           type='password'
           onChange={this.passwordChangeHandler}

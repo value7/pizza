@@ -37,7 +37,7 @@ app.get('/', (req, res) => {
 });
 
 // get all pizzerias
-app.get('/api/getPizzerias', (req, res) => {
+app.get('/api/pizzeria/getAll', (req, res) => {
   db.all(`SELECT id, name, addresse, website from pizzerias`, (err, rows) => {
     if (err) {
       console.error(err.message);
@@ -46,6 +46,16 @@ app.get('/api/getPizzerias', (req, res) => {
     res.send({pizzerias: rows});
   });
 });
+
+app.get('/api/pizzeria/getDetails/:name', (req, res) => {
+  db.all('SELECT id, name, addresse, website from pizzerias where name = (?)', [req.params.name], (err, rows) => {
+    if(err) {
+      console.log(err)
+    } else {
+      res.send({pizzeria: rows[0]});
+    }
+  })
+})
 
 app.post('/api/users/signup', function(req, res) {
   //save the username and password
@@ -175,8 +185,43 @@ app.use('/api', function(request, response, next) {
   }
 });
 
-app.get('/api/saveRoute', (req, res) => {
-  res.json({
-    "hello": "world"
-  });
+app.get('/api/users/:username', (req, res) => {
+  console.log(req.params.username);
+  console.log(req.decoded);
+  // check if it's his own profile page
+  if(!req.params.username === req.decoded.name) {
+    return response.status(403).json({ error: true, message: 'not your own profile page' });
+  } else {
+    db.all(`SELECT id, name from users where id = (?)`, [req.decoded.id], (err, rows) => {
+      if (err) {
+        console.error(err.message);
+      }
+      console.log(rows);
+      res.send({user: rows[0]});
+    });
+  }
+})
+
+app.post('/api/pizzeria/add', (req, res) => {
+  // check if it's his own profile page
+  if(req.body.name && req.body.addresse && req.body.link) {
+    db.run(
+      'insert into pizzerias (name, addresse, website) VALUES (?, ?, ?)', [req.body.name, req.body.addresse, req.body.link], function(err, result) {
+      console.log(err);
+      console.log(result);
+      console.log(this.lastID);
+      if(!err) {
+        //signup so empty votes
+        res.json({
+          success: true,
+          message: 'restaurant submitted',
+          name: req.body.name
+        });
+      } else {
+        res.status(303).send({success: false, message: 'the name addresse or link was already submitted'});
+      }
+    });
+  } else {
+    return res.status(403).json({ error: true, message: 'one or more fields missing' });
+  }
 })

@@ -1,14 +1,4 @@
 /// todos ///
-- add users
-  /- signup component
-  /- login component
-  - profil page
-- add pizzerias
-  - add pizzeria page
-  /- test pizzeria
-- add pizza ui
-  /- show sample name of pizzeria
-
 - add recommendation
 - add user specific recommendaitons
 
@@ -21,3 +11,12 @@
     cookie.save('user', user, { path: '/', maxAge: 86400 });
     /- test user
 /- git
+/- add users
+  /- signup component
+  /- login component
+  /- profil page
+/- add pizzerias
+  /- test pizzeria
+  /- add add pizzeria page
+  /- add test pizzeries
+  /- detailed pizza page
