@@ -38,7 +38,11 @@ app.get('/', (req, res) => {
 
 // get all pizzerias
 app.get('/api/pizzeria/getAll', (req, res) => {
-  db.all(`SELECT id, name, addresse, website from pizzerias`, (err, rows) => {
+  db.all(`SELECT p.id, p.name, p.addresse, p.website, avg(r.rating) as rating
+          from pizzerias as p
+          left join ratings as r
+            on r.pizzeriaId = p.id
+          group by p.id, p.name, p.addresse, p.website`, (err, rows) => {
     if (err) {
       console.error(err.message);
     }
@@ -48,7 +52,12 @@ app.get('/api/pizzeria/getAll', (req, res) => {
 });
 
 app.get('/api/pizzeria/getDetails/:name', (req, res) => {
-  db.all('SELECT id, name, addresse, website from pizzerias where name = (?)', [req.params.name], (err, rows) => {
+  db.all(`SELECT p.id, p.name, p.addresse, p.website, avg(r.rating) as rating
+          from pizzerias as p
+          left join ratings as r
+            on r.pizzeriaId = p.id
+          where name = (?)
+          group by p.id, p.name, p.addresse, p.website`, [req.params.name], (err, rows) => {
     if(err) {
       console.log(err)
     } else {
@@ -223,5 +232,22 @@ app.post('/api/pizzeria/add', (req, res) => {
     });
   } else {
     return res.status(403).json({ error: true, message: 'one or more fields missing' });
+  }
+})
+
+app.post('/api/rating/add', (req, res) => {
+  if(req.body.pizzeriaId && req.body.rating) {
+    db.run(`
+      insert into ratings (userId, pizzeriaId, rating) values (?, ?, ?)
+      `, [req.decoded.id, req.body.pizzeriaId, req.body.rating], function(err, result) {
+        if(!err) {
+          res.json({
+            success: true,
+            message: 'succesfully rated'
+          })
+        } else {
+          res.status(303).send({success: false, message: 'an error occurred while rating'});
+        }
+      })
   }
 })

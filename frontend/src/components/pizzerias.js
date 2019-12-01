@@ -32,7 +32,7 @@ class Pizzerias extends Component {
     return (
       <div>
         {this.state.pizzerias.map((pizzeria) =>
-          <Link to={"/pizzeria/" + pizzeria.name} key={pizzeria.id}>{pizzeria.name}</Link>
+          <Link to={"/pizzeria/" + pizzeria.name} key={pizzeria.id}>{pizzeria.name}({pizzeria.rating}/10)</Link>
         )}
       </div>
     )

@@ -1,5 +1,4 @@
 /// todos ///
-- add recommendation
 - add user specific recommendaitons
 
 
@@ -20,3 +19,7 @@
   /- add add pizzeria page
   /- add test pizzeries
   /- detailed pizza page
+/- add recommendation
+  /- add table
+  /- add input on pizzeria detail site
+  /- show avg on pizzerias site and details site
